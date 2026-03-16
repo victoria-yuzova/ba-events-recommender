@@ -41,7 +41,7 @@ def fetch_website_contents(url):
         text = soup.body.get_text(separator="\n", strip=True)
     else:
         text = ""
-    return (title + "\n\n" + text)[:2_000]
+    return (title + "\n\n" + text)[:8_000]
 
 
 def fetch_website_links(url):
@@ -221,7 +221,7 @@ def build_classified_events_dataset(
     model: str = "gpt-4.1-mini",
     out_dir: str = "../data/raw",
     filename: str = "03_events.csv",
-    limit: int = 50,  # start small
+    limit: int = 200,  # start small
 ):
     run_ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
     run_date = run_ts[:10]
