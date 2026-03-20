@@ -1,38 +1,64 @@
 # BA Events Recommender
 
-A data pipeline to ingest, classify and recommend current cultural events in Buenos Aires.
+A end-to-end ML pipeline that scrapes cultural events in Buenos Aires 
+and recommends what to do this weekend based on your preferences.
 
-## 🎯 Goal
+## 🎯 Problem
 
-Build a scalable system that:
-- Scrapes cultural institutions websites
-- Classifies relevant events (LLM-first approach)
-- Structures a clean events dataset
-- Builds a content-based recommendation system
+Buenos Aires has a rich cultural scene spread across dozens of 
+institutions with no unified discovery layer. This project builds 
+a personal recommender that aggregates events from multiple sources 
+and ranks them by similarity to your taste.
 
-## 🧱 Current Status
+## 🏗 Pipeline
 
-Version 0:
-- Generic website scraper
-- Link extraction
-- Clean text extraction
+1. **Scraping** — extracts links from 4 cultural institution homepages
+2. **LLM classification** — uses GPT-4.1-mini to extract structured 
+   event data (title, category, venue, price, tags, summary)
+3. **Cleaning** — filters to high-confidence event_detail rows, 
+   parses features, merges user ratings
+4. **Recommender** — TF-IDF vectorization on summaries + tags, 
+   cosine similarity ranking against liked events
+
+## 📊 Current Dataset
+
+- 4 sources: Complejo Teatral, MALBA, Bellas Artes, Turismo BA
+- ~103 events scraped per run
+- 36 clean events after filtering
+- 46 manually labeled events (ground truth)
 
 ## 🛠 Tech Stack
 
-- Python
-- BeautifulSoup
-- Requests
-- (Planned) LLM classification
-- (Planned) Embedding-based recommender
+- Python, BeautifulSoup, Requests
+- OpenAI API (GPT-4.1-mini) for event extraction
+- pandas, scikit-learn (TF-IDF, cosine similarity, 
+  logistic regression)
+- matplotlib, seaborn
+
+## 📁 Structure
+```
+notebooks/
+  01_scraper.ipynb          # data collection pipeline
+  02_cleaning_and_features  # cleaning, feature engineering
+  03_recommender.ipynb      # model and recommendations
+src/
+  scraper.py                # scraping functions
+  homepage_urls.json        # source URLs
+data/
+  raw/                      # scraped events by run date
+  processed/                # clean dataset, user ratings
+```
+
+## ⚠️ Known Limitations
+
+- 3 JS-rendered sites (Teatro Cervantes, Palacio Libertad, 
+  CC Recoleta) excluded — Playwright integration planned
+- Dataset is small (36 events) — cosine similarity works but 
+  supervised model evaluation is not meaningful at this size
+- No real-time updates — pipeline must be re-run manually
 
 ## 🚀 Next Steps
 
-- Add multi-source ingestion
-- LLM-based event classification
-- Dataset normalization
-- Recommendation engine
+- Playwright integration for JS-rendered sites
+- Scheduled pipeline runs to accumulate data over time
 - Streamlit demo app
-
----
-
-Work in progress.
