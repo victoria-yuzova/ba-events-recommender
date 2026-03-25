@@ -1,6 +1,6 @@
 # BA Events Recommender
 
-A end-to-end ML pipeline that scrapes cultural events in Buenos Aires 
+An end-to-end ML pipeline that scrapes cultural events in Buenos Aires 
 and recommends what to do this weekend based on your preferences.
 
 ## 🎯 Problem
@@ -19,6 +19,8 @@ and ranks them by similarity to your taste.
    parses features, merges user ratings
 4. **Recommender** — TF-IDF vectorization on summaries + tags, 
    cosine similarity ranking against liked events
+5. **App** — Streamlit interface with category filter, 
+   top 10 recommendations with links
 
 ## 📊 Current Dataset
 
@@ -31,22 +33,23 @@ and ranks them by similarity to your taste.
 
 - Python, BeautifulSoup, Requests
 - OpenAI API (GPT-4.1-mini) for event extraction
-- pandas, scikit-learn (TF-IDF, cosine similarity, 
-  logistic regression)
+- pandas, scikit-learn (TF-IDF, cosine similarity, logistic regression)
 - matplotlib, seaborn
+- Streamlit
 
 ## 📁 Structure
 ```
 notebooks/
-  01_scraper.ipynb          # data collection pipeline
-  02_cleaning_and_features  # cleaning, feature engineering
-  03_recommender.ipynb      # model and recommendations
+  01_scraper.ipynb             # data collection pipeline
+  02_cleaning_and_features     # cleaning, feature engineering
+  03_recommender.ipynb         # model and recommendations
 src/
-  scraper.py                # scraping functions
-  homepage_urls.json        # source URLs
+  scraper.py                   # scraping functions
+  homepage_urls.json           # source URLs
 data/
-  raw/                      # scraped events by run date
-  processed/                # clean dataset, user ratings
+  raw/                         # scraped events by run date
+  processed/                   # clean dataset, user ratings
+app.py                         # Streamlit demo app
 ```
 
 ## ⚠️ Known Limitations
@@ -55,10 +58,11 @@ data/
   CC Recoleta) excluded — Playwright integration planned
 - Dataset is small (36 events) — cosine similarity works but 
   supervised model evaluation is not meaningful at this size
-- No real-time updates — pipeline must be re-run manually
+- Recommendations currently based on one user's ratings — 
+  personalization flow planned
 
 ## 🚀 Next Steps
 
+- User rating flow in app for personalized recommendations
 - Playwright integration for JS-rendered sites
 - Scheduled pipeline runs to accumulate data over time
-- Streamlit demo app
